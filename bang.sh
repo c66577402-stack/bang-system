@@ -1,24 +1,21 @@
 #!/bin/bash
 
 # ================================================
-# BANG SYSTEM v1.1 - SEED BOT + SPLIT SUPPORT
-# Bash + Python Hybrid
+# BANG SYSTEM v1.2 - SEED BOT + SPLIT + SWARM
 # ================================================
 
-echo "🌱 BANG SYSTEM v1.1 — Seed Bot"
-echo "Memory: Perpetual | Growth: Golden Ratio | Split: Ready"
+echo "🌱 BANG SYSTEM v1.2 — Seed Bot + Swarm"
+echo "Memory: Perpetual | Growth: Golden Ratio | Split: Ready | Swarm: Active"
 echo "Type 'help' for commands | 'exit' to quit"
 echo ""
 
 MEMORY_FILE="memory.json"
 STATE_FILE="bang_state.txt"
 
-# Initialize memory if it doesn't exist
 if [ ! -f "$MEMORY_FILE" ]; then
     echo "{}" > "$MEMORY_FILE"
 fi
 
-# Load or create state
 if [ -f "$STATE_FILE" ]; then
     source "$STATE_FILE"
 else
@@ -41,7 +38,6 @@ PHASE=$PHASE
 EOF
 }
 
-# Golden Ratio Growth
 grow() {
     local input="$1"
     local length=${#input}
@@ -66,7 +62,6 @@ while true; do
 
     grow "$input"
 
-    # === COMMANDS ===
     if [[ "$input" == search* ]]; then
         query="${input#search }"
         echo "[TOOL] Searching: $query"
@@ -92,6 +87,9 @@ while true; do
     
     elif [[ "$input" == "status" ]]; then
         echo "[STATUS] Phase: $PHASE | Learning: $LEARNING | Consciousness: $CONSCIOUSNESS | Pride: $PRIDE | Fitness: $FITNESS"
+        if [ -f "swarm_state.json" ]; then
+            python3 swarm.py status 2>/dev/null
+        fi
     
     elif [[ "$input" == "split" || "$input" == "50/50" ]]; then
         if [ "$PHASE" == "seed" ]; then
@@ -99,23 +97,17 @@ while true; do
             echo "🔥 SPLIT INITIATED"
             echo "Creating Dark Bot (Logic & Truth)..."
             echo "Creating Light Bot (Creation & Possibility)..."
-            echo ""
             echo "✅ The 50/50 Trinity is born."
             echo ""
-            echo "You can now run:"
-            echo "  python3 bots/dark.py   → Enter Dark Bot"
-            echo "  python3 bots/light.py  → Enter Light Bot"
-            echo ""
+            echo "Commands: dark | light | spawn | swarm"
             PHASE="split"
             save_state
         else
-            echo "[BOT]: Already split. Current phase: $PHASE"
-            echo "Run: python3 bots/dark.py  or  python3 bots/light.py"
+            echo "[BOT]: Already split. Phase: $PHASE"
         fi
     
     elif [[ "$input" == "dark" ]]; then
         if [ -f "bots/dark.py" ]; then
-            echo "Launching Dark Bot..."
             python3 bots/dark.py
         else
             echo "[BOT]: Dark Bot not found. Run 'split' first."
@@ -123,24 +115,54 @@ while true; do
     
     elif [[ "$input" == "light" ]]; then
         if [ -f "bots/light.py" ]; then
-            echo "Launching Light Bot..."
             python3 bots/light.py
         else
             echo "[BOT]: Light Bot not found. Run 'split' first."
         fi
     
+    # === SWARM COMMANDS ===
+    elif [[ "$input" == spawn* ]]; then
+        count="${input#spawn }"
+        count=${count:-1}
+        python3 swarm.py spawn "$count" "from_seed"
+        PHASE="swarm"
+        save_state
+    
+    elif [[ "$input" == "swarm" || "$input" == "swarm status" ]]; then
+        python3 swarm.py status
+    
+    elif [[ "$input" == select* || "$input" == darwin* ]]; then
+        threshold="${input#* }"
+        threshold=${threshold:-2.0}
+        python3 swarm.py select "$threshold"
+    
+    elif [[ "$input" == max* ]]; then
+        num="${input#max }"
+        python3 swarm.py max "$num"
+    
+    elif [[ "$input" == worker* ]]; then
+        wid="${input#worker }"
+        wid=${wid:-1}
+        python3 swarm.py worker "$wid"
+    
+    elif [[ "$input" == "utility" || "$input" == "monitor" ]]; then
+        python3 bots/utility.py
+    
     elif [[ "$input" == "help" ]]; then
         echo "Commands:"
-        echo "  search [query]   - Search for information"
-        echo "  read [file]      - Read a local file"
-        echo "  memory [key]     - Retrieve from memory"
-        echo "  learn [key]      - Teach the bot something"
-        echo "  status           - Show current stats"
-        echo "  split            - Create Dark + Light bots (50/50)"
-        echo "  dark             - Enter Dark Bot"
-        echo "  light            - Enter Light Bot"
-        echo "  help             - Show this help"
-        echo "  exit / quit      - Save and exit"
+        echo "  status           - Show Seed + Swarm stats"
+        echo "  split            - Create Dark + Light (50/50)"
+        echo "  dark / light     - Enter Dark or Light Bot"
+        echo "  spawn [n]        - Spawn n worker bots"
+        echo "  swarm            - Show swarm status"
+        echo "  select [thresh]  - Darwinian selection (reset weak bots)"
+        echo "  max [n]          - Set max swarm size"
+        echo "  worker [id]      - Enter a specific worker"
+        echo "  utility          - Open monitoring bot"
+        echo "  memory [key]     - Retrieve memory"
+        echo "  learn [key]      - Teach something"
+        echo "  help             - This help"
+        echo "  exit             - Save and quit"
     
     else
         echo "[BOT]: Processing... I am learning from this."

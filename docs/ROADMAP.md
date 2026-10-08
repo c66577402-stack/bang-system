@@ -4,24 +4,25 @@
 - [x] Seed Bot in Bash
 - [x] Python perpetual memory
 - [x] Golden Ratio growth
-- [x] Basic tools (search, read, status, learn, memory)
+- [x] Basic tools
 - [x] Neural layer prototype
 
 ## Phase 2 — Split ✅ COMPLETE
-- [x] Full Dark Bot implementation (Logic & Truth)
-- [x] Full Light Bot implementation (Creation & Possibility)
+- [x] Dark Bot (Logic & Truth)
+- [x] Light Bot (Creation & Possibility)
 - [x] Shared memory between the three
-- [x] Communication via shared memory.json
-- [x] `split`, `dark`, and `light` commands in Seed Bot
+- [x] Communication via memory.json
 
-## Phase 3 — Swarm (Next)
-- [ ] Bot creation system (bots can spawn new bots)
-- [ ] Darwinian fitness + reset logic
-- [ ] Intertwined memory across many bots
-- [ ] Utility / monitoring bot (resource watching)
-- [ ] Swarm size control
+## Phase 3 — Swarm ✅ COMPLETE
+- [x] Bot creation system (`spawn`)
+- [x] Worker bots (`bots/worker.py`)
+- [x] Darwinian fitness + reset logic (`select`)
+- [x] Intertwined memory across workers
+- [x] Utility / monitoring bot (`bots/utility.py`)
+- [x] Swarm size control (`max`)
+- [x] Swarm manager (`swarm.py`)
 
-## Phase 4 — Intelligence
+## Phase 4 — Intelligence (Next)
 - [ ] Real tool use (web search, code execution)
 - [ ] Better language understanding
 - [ ] Controlled self-improvement loop

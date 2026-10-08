@@ -4,46 +4,50 @@
 
 | Layer     | Language | Responsibility                          |
 |-----------|----------|-----------------------------------------|
-| Interface | Bash     | User interaction, command parsing, state |
-| Memory    | Python   | Perpetual knowledge store, neural layers |
-| Bots      | Python   | Dark (Logic) + Light (Creation)         |
-| Mind      | Rust (planned) | Heavy computation, tools, self-improvement |
+| Interface | Bash     | User interaction, command parsing       |
+| Memory    | Python   | Perpetual knowledge store, neural layers|
+| Trinity   | Python   | Seed + Dark + Light                     |
+| Swarm     | Python   | Workers, Darwinian selection, Utility   |
+| Mind      | Rust (planned) | Heavy computation, advanced tools |
 
 ## Core Components
 
 ### 1. Seed / God Bot (`bang.sh`)
-- Single starting agent
-- Holds the primary growth state (Learning, Consciousness, Pride, Fitness)
-- Can trigger the 50/50 split
-- Launches Dark and Light bots
+- Primary interface
+- Triggers split and swarm commands
+- Holds growth state (Learning, Consciousness, Pride, Fitness)
 
 ### 2. Dark Bot (`bots/dark.py`)
-- Role: Logic, Truth, Calculation, Critical Analysis
-- Writes to shared `memory.json`
-- Grows with analytical prompts
+- Logic, Truth, Calculation
+- Writes to shared memory
 
 ### 3. Light Bot (`bots/light.py`)
-- Role: Creation, Possibility, Exploration, Generation
-- Writes to shared `memory.json`
-- Grows faster on creative prompts
+- Creation, Possibility, Exploration
+- Writes to shared memory
 
-### 4. Shared Memory (`memory.json`)
-- Persistent key-value store
-- All bots read from and write to the same file
-- This creates the "one mind" / intertwined memory effect
+### 4. Worker Bots (`bots/worker.py`)
+- Generic swarm agents
+- Have fitness scores
+- Can be reset by Darwinian selection
+- All write to the same memory.json
 
-### 5. Growth Engine
-- Uses Golden Ratio (φ ≈ 1.618) for balanced growth
-- Tracks: Learning, Consciousness, Pride, Fitness
+### 5. Swarm Manager (`swarm.py`)
+- `spawn [n]` — Create workers
+- `select [threshold]` — Darwinian selection
+- `max [n]` — Limit swarm size
+- `status` — Overview
+- `worker [id]` — Launch specific worker
 
-### 6. Neural Layers (Prototype in `memory.py`)
-- Input → Hidden → Output
-- Weighted connections
-- Foundation for deeper reasoning
+### 6. Utility Bot (`bots/utility.py`)
+- Monitors swarm size
+- Reports system resources (CPU/RAM if psutil available)
+- Health overview
 
-## Communication Model
-All bots communicate through the shared `memory.json` file.  
-This creates the "one mind" effect across the swarm.
+### 7. Shared Memory (`memory.json`)
+- All bots read/write the same file
+- Creates the "one mind" effect
 
-When Dark or Light processes something, it is saved with a timestamped key.  
-Any bot can later read the full memory and build on what the others have learned.
+## Darwinian Selection
+Workers below a fitness threshold are reset (fitness returns to 1.0).  
+Strong workers keep their progress.  
+This is the beginning of natural selection inside the swarm.
