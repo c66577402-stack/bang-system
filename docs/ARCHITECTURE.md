@@ -1,53 +1,33 @@
-# BANG System Architecture
+# BANG System Architecture v2.0
 
-## Layered Design
+## Full Stack
 
-| Layer     | Language | Responsibility                          |
-|-----------|----------|-----------------------------------------|
-| Interface | Bash     | User interaction, command parsing       |
-| Memory    | Python   | Perpetual knowledge store, neural layers|
-| Trinity   | Python   | Seed + Dark + Light                     |
-| Swarm     | Python   | Workers, Darwinian selection, Utility   |
-| Mind      | Rust (planned) | Heavy computation, advanced tools |
+| Component        | File                  | Role                                      |
+|------------------|-----------------------|-------------------------------------------|
+| Seed Interface   | `bang.sh`             | Main CLI, growth, command router          |
+| Memory           | `memory.py`           | Perpetual JSON memory + neural layers     |
+| Dark Bot         | `bots/dark.py`        | Logic & Truth                             |
+| Light Bot        | `bots/light.py`       | Creation & Possibility                    |
+| Worker Bots      | `bots/worker.py`      | Swarm agents with fitness                 |
+| Utility Bot      | `bots/utility.py`     | Monitoring + resource report              |
+| Swarm Manager    | `swarm.py`            | Spawn, Darwinian select, size control     |
+| Tools            | `tools.py`            | Search, run, export, import, improve      |
+| Playground       | `playground.py`       | Multi-bot interactive test mode           |
+| Bot Creator      | `create_bot.py`       | Recursive generation of new bots          |
+| Cloud Notes      | `docs/CLOUD.md`       | Deployment guidance                       |
 
-## Core Components
+## Data Flow
 
-### 1. Seed / God Bot (`bang.sh`)
-- Primary interface
-- Triggers split and swarm commands
-- Holds growth state (Learning, Consciousness, Pride, Fitness)
+All bots → read/write `memory.json` → one shared mind.
 
-### 2. Dark Bot (`bots/dark.py`)
-- Logic, Truth, Calculation
-- Writes to shared memory
+Seed controls growth stats in `bang_state.txt`.  
+Swarm state lives in `swarm_state.json`.  
+Individual workers keep light local state files.
 
-### 3. Light Bot (`bots/light.py`)
-- Creation, Possibility, Exploration
-- Writes to shared memory
+## Design Philosophy
 
-### 4. Worker Bots (`bots/worker.py`)
-- Generic swarm agents
-- Have fitness scores
-- Can be reset by Darwinian selection
-- All write to the same memory.json
-
-### 5. Swarm Manager (`swarm.py`)
-- `spawn [n]` — Create workers
-- `select [threshold]` — Darwinian selection
-- `max [n]` — Limit swarm size
-- `status` — Overview
-- `worker [id]` — Launch specific worker
-
-### 6. Utility Bot (`bots/utility.py`)
-- Monitors swarm size
-- Reports system resources (CPU/RAM if psutil available)
-- Health overview
-
-### 7. Shared Memory (`memory.json`)
-- All bots read/write the same file
-- Creates the "one mind" effect
-
-## Darwinian Selection
-Workers below a fitness threshold are reset (fitness returns to 1.0).  
-Strong workers keep their progress.  
-This is the beginning of natural selection inside the swarm.
+- Start with one Seed
+- Split into complementary halves (Dark/Light)
+- Scale into a swarm under Darwinian pressure
+- Add real tools and self-reflection
+- Allow the system to create new bots of its own

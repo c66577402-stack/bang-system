@@ -1,12 +1,13 @@
 #!/bin/bash
 
 # ================================================
-# BANG SYSTEM v1.2 - SEED BOT + SPLIT + SWARM
+# BANG SYSTEM v2.0 - FULL SYSTEM
+# Phases 1-5 Complete
 # ================================================
 
-echo "🌱 BANG SYSTEM v1.2 — Seed Bot + Swarm"
-echo "Memory: Perpetual | Growth: Golden Ratio | Split: Ready | Swarm: Active"
-echo "Type 'help' for commands | 'exit' to quit"
+echo "🌱 BANG SYSTEM v2.0 — Full Stack"
+echo "Seed → Split → Swarm → Intelligence → Scale"
+echo "Type 'help' for all commands | 'exit' to quit"
 echo ""
 
 MEMORY_FILE="memory.json"
@@ -42,7 +43,6 @@ grow() {
     local input="$1"
     local length=${#input}
     local growth=$(echo "scale=4; $length * 0.07 * $PHI" | bc 2>/dev/null || echo "0.5")
-    
     LEARNING=$(echo "scale=2; $LEARNING + $growth" | bc 2>/dev/null || echo "$LEARNING")
     CONSCIOUSNESS=$(echo "scale=2; $CONSCIOUSNESS + ($growth * 0.7)" | bc 2>/dev/null || echo "$CONSCIOUSNESS")
     PRIDE=$(echo "scale=2; $PRIDE + ($growth * 0.5)" | bc 2>/dev/null || echo "$PRIDE")
@@ -54,118 +54,103 @@ while true; do
 
     if [[ "$input" == "exit" || "$input" == "quit" || "$input" == "q" ]]; then
         save_state
-        echo "Seed bot saved. Memory preserved. See you later."
+        echo "Seed bot saved. Memory preserved."
         break
     fi
 
     if [ -z "$input" ]; then continue; fi
-
     grow "$input"
 
-    if [[ "$input" == search* ]]; then
-        query="${input#search }"
-        echo "[TOOL] Searching: $query"
-        echo "[BOT]: Searching for information about: $query"
-    
-    elif [[ "$input" == read* ]]; then
-        file="${input#read }"
-        if [ -f "$file" ]; then
-            echo "[BOT]: Content of $file:"
-            head -30 "$file"
-        else
-            echo "[BOT]: File not found."
-        fi
-    
-    elif [[ "$input" == memory* ]]; then
-        key="${input#memory }"
-        python3 memory.py get "$key" 2>/dev/null || echo "[BOT]: Memory system not fully connected yet."
-    
-    elif [[ "$input" == learn* ]]; then
-        key="${input#learn }"
-        read -p "What should I remember about '$key'? " value
-        python3 memory.py add "$key" "$value" 2>/dev/null || echo "[BOT]: Memory update attempted."
-    
-    elif [[ "$input" == "status" ]]; then
+    # --- Core ---
+    if [[ "$input" == "status" ]]; then
         echo "[STATUS] Phase: $PHASE | Learning: $LEARNING | Consciousness: $CONSCIOUSNESS | Pride: $PRIDE | Fitness: $FITNESS"
-        if [ -f "swarm_state.json" ]; then
-            python3 swarm.py status 2>/dev/null
-        fi
-    
+        [ -f swarm_state.json ] && python3 swarm.py status 2>/dev/null
+
     elif [[ "$input" == "split" || "$input" == "50/50" ]]; then
         if [ "$PHASE" == "seed" ]; then
-            echo ""
-            echo "🔥 SPLIT INITIATED"
-            echo "Creating Dark Bot (Logic & Truth)..."
-            echo "Creating Light Bot (Creation & Possibility)..."
-            echo "✅ The 50/50 Trinity is born."
-            echo ""
-            echo "Commands: dark | light | spawn | swarm"
+            echo "🔥 SPLIT INITIATED — Dark + Light born."
             PHASE="split"
             save_state
         else
             echo "[BOT]: Already split. Phase: $PHASE"
         fi
-    
+
     elif [[ "$input" == "dark" ]]; then
-        if [ -f "bots/dark.py" ]; then
-            python3 bots/dark.py
-        else
-            echo "[BOT]: Dark Bot not found. Run 'split' first."
-        fi
-    
+        [ -f bots/dark.py ] && python3 bots/dark.py || echo "Run 'split' first."
+
     elif [[ "$input" == "light" ]]; then
-        if [ -f "bots/light.py" ]; then
-            python3 bots/light.py
-        else
-            echo "[BOT]: Light Bot not found. Run 'split' first."
-        fi
-    
-    # === SWARM COMMANDS ===
+        [ -f bots/light.py ] && python3 bots/light.py || echo "Run 'split' first."
+
+    # --- Swarm ---
     elif [[ "$input" == spawn* ]]; then
-        count="${input#spawn }"
-        count=${count:-1}
+        count="${input#spawn }"; count=${count:-1}
         python3 swarm.py spawn "$count" "from_seed"
-        PHASE="swarm"
-        save_state
-    
-    elif [[ "$input" == "swarm" || "$input" == "swarm status" ]]; then
+        PHASE="swarm"; save_state
+
+    elif [[ "$input" == "swarm" ]]; then
         python3 swarm.py status
-    
+
     elif [[ "$input" == select* || "$input" == darwin* ]]; then
-        threshold="${input#* }"
-        threshold=${threshold:-2.0}
-        python3 swarm.py select "$threshold"
-    
+        thresh="${input##* }"; thresh=${thresh:-2.0}
+        python3 swarm.py select "$thresh"
+
     elif [[ "$input" == max* ]]; then
-        num="${input#max }"
-        python3 swarm.py max "$num"
-    
+        python3 swarm.py max "${input#max }"
+
     elif [[ "$input" == worker* ]]; then
-        wid="${input#worker }"
-        wid=${wid:-1}
-        python3 swarm.py worker "$wid"
-    
+        python3 swarm.py worker "${input#worker }"
+
     elif [[ "$input" == "utility" || "$input" == "monitor" ]]; then
         python3 bots/utility.py
-    
+
+    # --- Intelligence (Phase 4) ---
+    elif [[ "$input" == search* ]]; then
+        query="${input#search }"
+        echo "[TOOL] Searching..."
+        python3 tools.py search "$query"
+
+    elif [[ "$input" == run* ]]; then
+        expr="${input#run }"
+        python3 tools.py run "$expr"
+
+    elif [[ "$input" == "export" ]]; then
+        python3 tools.py export
+
+    elif [[ "$input" == import* ]]; then
+        python3 tools.py import "${input#import }"
+
+    elif [[ "$input" == "improve" ]]; then
+        python3 tools.py improve
+
+    elif [[ "$input" == memory* ]]; then
+        python3 memory.py get "${input#memory }" 2>/dev/null || echo "No memory."
+
+    elif [[ "$input" == learn* ]]; then
+        key="${input#learn }"
+        read -p "What to remember about '$key'? " value
+        python3 memory.py add "$key" "$value" 2>/dev/null
+
+    # --- Scale (Phase 5) ---
+    elif [[ "$input" == "playground" ]]; then
+        python3 playground.py
+
+    elif [[ "$input" == create* ]]; then
+        rest="${input#create }"
+        name=$(echo "$rest" | awk '{print $1}')
+        role=$(echo "$rest" | cut -d' ' -f2-)
+        python3 create_bot.py "$name" "$role"
+
     elif [[ "$input" == "help" ]]; then
-        echo "Commands:"
-        echo "  status           - Show Seed + Swarm stats"
-        echo "  split            - Create Dark + Light (50/50)"
-        echo "  dark / light     - Enter Dark or Light Bot"
-        echo "  spawn [n]        - Spawn n worker bots"
-        echo "  swarm            - Show swarm status"
-        echo "  select [thresh]  - Darwinian selection (reset weak bots)"
-        echo "  max [n]          - Set max swarm size"
-        echo "  worker [id]      - Enter a specific worker"
-        echo "  utility          - Open monitoring bot"
-        echo "  memory [key]     - Retrieve memory"
-        echo "  learn [key]      - Teach something"
-        echo "  help             - This help"
-        echo "  exit             - Save and quit"
-    
+        echo ""
+        echo "=== BANG v2.0 COMMANDS ==="
+        echo "Core:     status | split | dark | light | help | exit"
+        echo "Swarm:    spawn [n] | swarm | select [t] | max [n] | worker [id] | utility"
+        echo "Intel:    search [q] | run [expr] | export | import [file] | improve | memory | learn"
+        echo "Scale:    playground | create [Name] [Role]"
+        echo ""
+
     else
-        echo "[BOT]: Processing... I am learning from this."
+        echo "[BOT]: Processing... I am learning."
     fi
 
     save_state

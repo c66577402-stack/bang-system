@@ -1,64 +1,40 @@
-# BANG SYSTEM
+# BANG SYSTEM v2.0
 
 **Recursive Self-Improving Multi-Agent AI**
 
-Seed Bot → Dark/Light Split (50/50) → Swarm
+Seed → Dark/Light (50/50) → Swarm → Intelligence → Scale
+
+**All 5 phases complete.**
 
 ---
 
-## Vision
-
-BANG is a layered multi-agent system designed to grow from a single Seed/God Bot into a collective intelligence (swarm) that shares one mind through intertwined memory.
-
-### Core Principles
-- **Perpetual Memory** — Knowledge grows forever and is shared across bots
-- **Golden Ratio (Phi) Growth** — Natural, balanced development
-- **Darwinian Evolution** — Strong bots survive; weak ones reset
-- **Neural Layers** — Input → Hidden → Output processing
-- **Tool Use** — Search, files, commands, monitoring
-- **Recursive Self-Creation** — Bots can spawn other bots
-
-### Architecture Flow
+## Architecture
 
 ```
-                    ┌─────────────────────┐
-                    │   GOD / SEED BOT    │
-                    └──────────┬──────────┘
-                               │
-              ┌───────────────┼───────────────┐
-              │                                 │
-       ┌──────▼──────┐                   ┌──────▼──────┐
-       │   DARK BOT  │                   │  LIGHT BOT  │
-       └──────┬───────┘                   └──────┬──────┘
-              │                                 │
-              └───────────────┬───────────────┘
-                               │
-                    ┌──────────▼──────────┐
-                    │      SWARM          │
-                    │  Workers + Utility  │
-                    │  Darwinian Select   │
-                    └─────────────────────┘
+SEED BOT (bang.sh)
+    ├─ Dark Bot      (Logic & Truth)
+    ├─ Light Bot     (Creation & Possibility)
+    ├─ Swarm Manager (spawn, select, max)
+    │     ├─ Worker Bots (fitness + Darwinian reset)
+    │     └─ Utility Bot (monitoring)
+    ├─ Tools         (search, run, export, improve)
+    ├─ Playground    (multi-bot test mode)
+    └─ create_bot    (recursive bot generation)
 ```
+
+All bots share one mind through `memory.json`.
 
 ---
 
-## Current Status (v1.2)
+## Status
 
-| Feature              | Status      |
-|----------------------|-------------|
-| Seed Bot             | ✅ Working  |
-| Perpetual Memory     | ✅ Working  |
-| Golden Ratio Growth  | ✅ Working  |
-| Dark Bot             | ✅ Working  |
-| Light Bot            | ✅ Working  |
-| Shared Memory        | ✅ Working  |
-| Worker Bots          | ✅ Working  |
-| Swarm Manager        | ✅ Working  |
-| Darwinian Selection  | ✅ Working  |
-| Utility / Monitor    | ✅ Working  |
-| Swarm Size Control   | ✅ Working  |
-| Self-Improvement     | 🔄 Planned  |
-| Real Web Tools       | 🔄 Planned  |
+| Phase | Feature                        | Status     |
+|-------|--------------------------------|------------|
+| 1     | Seed Bot + Memory + Growth     | ✅ Complete |
+| 2     | Dark + Light Split             | ✅ Complete |
+| 3     | Swarm + Darwinian + Utility    | ✅ Complete |
+| 4     | Tools + Self-Improve + Export  | ✅ Complete |
+| 5     | Playground + Create Bot + Cloud| ✅ Complete |
 
 ---
 
@@ -68,33 +44,49 @@ BANG is a layered multi-agent system designed to grow from a single Seed/God Bot
 git clone https://github.com/c66577402-stack/bang-system.git
 cd bang-system
 chmod +x bang.sh
+pip install -r requirements.txt   # optional (for utility monitoring)
 ./bang.sh
 ```
 
-### Main Commands
+### Full Command List
 
-| Command              | What it does                          |
-|----------------------|---------------------------------------|
-| `status`             | Seed + Swarm stats                    |
-| `split`              | Create Dark + Light                   |
-| `dark` / `light`     | Enter Dark or Light Bot               |
-| `spawn [n]`          | Spawn n worker bots                   |
-| `swarm`              | Show swarm status                     |
-| `select [threshold]` | Darwinian selection (reset weak)      |
-| `max [n]`            | Set max swarm size                    |
-| `worker [id]`        | Enter a specific worker               |
-| `utility`            | Open monitoring bot                   |
-| `help`               | Full command list                     |
-| `exit`               | Save and quit                         |
+**Core**
+- `status` — Show stats
+- `split` — Birth Dark + Light
+- `dark` / `light` — Enter those bots
+- `exit` — Save and quit
 
-### Direct Swarm Control
+**Swarm**
+- `spawn [n]` — Create workers
+- `swarm` — Swarm status
+- `select [threshold]` — Darwinian reset of weak bots
+- `max [n]` — Limit swarm size
+- `worker [id]` — Enter a worker
+- `utility` — System monitor
+
+**Intelligence**
+- `search [query]` — Real web search
+- `run [expression]` — Simple math/code
+- `export` — Backup knowledge
+- `import [file]` — Load knowledge
+- `improve` — Self-improvement suggestions
+- `memory [key]` / `learn [key]` — Memory ops
+
+**Scale**
+- `playground` — Multi-bot test environment
+- `create [Name] [Role]` — Generate a brand new bot
+
+---
+
+## Direct Scripts
 
 ```bash
 python3 swarm.py status
-python3 swarm.py spawn 5 "test"
-python3 swarm.py select 2.0
-python3 swarm.py max 30
-python3 swarm.py worker 1
+python3 swarm.py spawn 5
+python3 tools.py search "golden ratio"
+python3 tools.py improve
+python3 playground.py
+python3 create_bot.py Analyst "Deep analysis"
 python3 bots/utility.py
 ```
 

@@ -1,36 +1,38 @@
-# Roadmap
+# Roadmap — ALL PHASES COMPLETE
 
-## Phase 1 — Foundation ✅ COMPLETE
-- [x] Seed Bot in Bash
-- [x] Python perpetual memory
+## Phase 1 — Foundation ✅
+- [x] Seed Bot (Bash)
+- [x] Perpetual memory (Python)
 - [x] Golden Ratio growth
-- [x] Basic tools
-- [x] Neural layer prototype
+- [x] Basic tools + neural prototype
 
-## Phase 2 — Split ✅ COMPLETE
+## Phase 2 — Split ✅
 - [x] Dark Bot (Logic & Truth)
 - [x] Light Bot (Creation & Possibility)
-- [x] Shared memory between the three
-- [x] Communication via memory.json
+- [x] Shared memory
 
-## Phase 3 — Swarm ✅ COMPLETE
-- [x] Bot creation system (`spawn`)
-- [x] Worker bots (`bots/worker.py`)
-- [x] Darwinian fitness + reset logic (`select`)
-- [x] Intertwined memory across workers
-- [x] Utility / monitoring bot (`bots/utility.py`)
-- [x] Swarm size control (`max`)
-- [x] Swarm manager (`swarm.py`)
+## Phase 3 — Swarm ✅
+- [x] Worker bots
+- [x] Swarm manager (spawn / select / max)
+- [x] Darwinian fitness + reset
+- [x] Utility / monitoring bot
 
-## Phase 4 — Intelligence (Next)
-- [ ] Real tool use (web search, code execution)
-- [ ] Better language understanding
-- [ ] Controlled self-improvement loop
-- [ ] Export/import of knowledge
-- [ ] Stronger neural processing
+## Phase 4 — Intelligence ✅
+- [x] Real web search (`tools.py search`)
+- [x] Simple code/math execution
+- [x] Knowledge export / import
+- [x] Controlled self-improvement suggestions
+- [x] Stronger memory integration
 
-## Phase 5 — Scale
-- [ ] Optional cloud deployment
-- [ ] Playground / Discord mode
-- [ ] Polaris language experiments
-- [ ] Full recursive self-creation
+## Phase 5 — Scale ✅
+- [x] Playground multi-bot mode
+- [x] Recursive bot creation (`create_bot.py`)
+- [x] Cloud deployment notes (`docs/CLOUD.md`)
+- [x] requirements.txt for optional deps
+
+## Future Ideas (beyond v2.0)
+- Discord / Telegram bridge
+- Redis or API-based shared memory for multi-machine
+- Full self-modifying code loops (with safety)
+- Polaris language experiments
+- Stronger LLM-backed responses via API keys
