@@ -1,33 +1,34 @@
-# BANG System Architecture v2.0
+# BANG Architecture v2.1
 
-## Full Stack
+## Components
 
-| Component        | File                  | Role                                      |
-|------------------|-----------------------|-------------------------------------------|
-| Seed Interface   | `bang.sh`             | Main CLI, growth, command router          |
-| Memory           | `memory.py`           | Perpetual JSON memory + neural layers     |
-| Dark Bot         | `bots/dark.py`        | Logic & Truth                             |
-| Light Bot        | `bots/light.py`       | Creation & Possibility                    |
-| Worker Bots      | `bots/worker.py`      | Swarm agents with fitness                 |
-| Utility Bot      | `bots/utility.py`     | Monitoring + resource report              |
-| Swarm Manager    | `swarm.py`            | Spawn, Darwinian select, size control     |
-| Tools            | `tools.py`            | Search, run, export, import, improve      |
-| Playground       | `playground.py`       | Multi-bot interactive test mode           |
-| Bot Creator      | `create_bot.py`       | Recursive generation of new bots          |
-| Cloud Notes      | `docs/CLOUD.md`       | Deployment guidance                       |
+| Component     | File              | Role                                      |
+|---------------|-------------------|-------------------------------------------|
+| Seed          | bang.sh           | Main CLI + growth + command router        |
+| Memory        | memory.py         | Perpetual JSON store + neural prototype   |
+| Dark / Light  | bots/dark.py, light.py | Specialized halves                   |
+| Workers       | bots/worker.py    | Swarm agents with fitness                 |
+| Utility       | bots/utility.py   | Monitoring                                |
+| Swarm Manager | swarm.py          | Spawn, Darwinian select, size limits      |
+| Tools         | tools.py          | Search, run, export, import, improve      |
+| Playground    | playground.py     | Multi-bot test mode                       |
+| Creator       | create_bot.py     | Recursive new-bot generation              |
+| **Graph**     | **graph.py**      | **Nodes, edges, activation, propagation** |
 
-## Data Flow
+## Graph Layer
 
-All bots → read/write `memory.json` → one shared mind.
+- **Nodes:** bots, concepts, system objects
+- **Edges:** parent, influence, complement, manages, knows, monitors
+- **Activation:** activity on a node spreads to neighbors by edge weight
+- **Decay:** activations fade unless reinforced
+- **Bootstrap:** builds the core Seed/Dark/Light/Swarm structure
 
-Seed controls growth stats in `bang_state.txt`.  
-Swarm state lives in `swarm_state.json`.  
-Individual workers keep light local state files.
+This is still a lightweight graph (JSON-backed), not a trained neural net.  
+It gives the system a real relational structure instead of only a flat memory file.
 
-## Design Philosophy
+## Data files
 
-- Start with one Seed
-- Split into complementary halves (Dark/Light)
-- Scale into a swarm under Darwinian pressure
-- Add real tools and self-reflection
-- Allow the system to create new bots of its own
+- `memory.json` — shared knowledge
+- `graph_state.json` — nodes + edges + activations
+- `swarm_state.json` — worker list and limits
+- `bang_state.txt` — Seed growth stats

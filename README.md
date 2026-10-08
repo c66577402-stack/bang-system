@@ -1,40 +1,47 @@
-# BANG SYSTEM v2.0
+# BANG SYSTEM v2.1
 
-**Recursive Self-Improving Multi-Agent AI**
+**Recursive Self-Improving Multi-Agent AI + Graph Layer**
 
-Seed → Dark/Light (50/50) → Swarm → Intelligence → Scale
+Seed → Dark/Light → Swarm → Intelligence → Scale → **Graph**
 
-**All 5 phases complete.**
+---
+
+## What it is
+
+A multi-agent framework where bots share one mind (memory), specialize (Dark/Light), scale (swarm), select (Darwinian), create new bots, use tools, and are now connected through a **graph** of nodes and edges.
 
 ---
 
 ## Architecture
 
 ```
-SEED BOT (bang.sh)
-    ├─ Dark Bot      (Logic & Truth)
-    ├─ Light Bot     (Creation & Possibility)
-    ├─ Swarm Manager (spawn, select, max)
-    │     ├─ Worker Bots (fitness + Darwinian reset)
-    │     └─ Utility Bot (monitoring)
-    ├─ Tools         (search, run, export, improve)
-    ├─ Playground    (multi-bot test mode)
-    └─ create_bot    (recursive bot generation)
+SEED ─────────── Dark
+  │   parent/influence     │
+  │                        complement
+  └────────────── Light
+  │
+  └─ controls ─ Swarm ─ manages ─ Workers
+                    │
+                    └ monitors ─ Utility
 ```
 
-All bots share one mind through `memory.json`.
+Graph nodes = bots + concepts.  
+Edges = parent, influence, complement, manages, knows, etc.  
+Activation propagates along edges.
 
 ---
 
 ## Status
 
-| Phase | Feature                        | Status     |
-|-------|--------------------------------|------------|
-| 1     | Seed Bot + Memory + Growth     | ✅ Complete |
-| 2     | Dark + Light Split             | ✅ Complete |
-| 3     | Swarm + Darwinian + Utility    | ✅ Complete |
-| 4     | Tools + Self-Improve + Export  | ✅ Complete |
-| 5     | Playground + Create Bot + Cloud| ✅ Complete |
+| Layer            | Status     |
+|------------------|------------|
+| Seed + Memory    | ✅         |
+| Dark / Light     | ✅         |
+| Swarm + Darwin   | ✅         |
+| Tools + Improve  | ✅         |
+| Playground       | ✅         |
+| Bot Creation     | ✅         |
+| **Graph Layer**  | ✅ New     |
 
 ---
 
@@ -44,54 +51,40 @@ All bots share one mind through `memory.json`.
 git clone https://github.com/c66577402-stack/bang-system.git
 cd bang-system
 chmod +x bang.sh
-pip install -r requirements.txt   # optional (for utility monitoring)
+pip install -r requirements.txt   # optional
 ./bang.sh
 ```
 
-### Full Command List
+### Important new commands
 
-**Core**
-- `status` — Show stats
-- `split` — Birth Dark + Light
-- `dark` / `light` — Enter those bots
-- `exit` — Save and quit
+```
+graph                 # show graph status
+graph bootstrap       # create Seed/Dark/Light structure
+activate seed 1.0     # activate a node + propagate
+decay                 # decay all activations
+```
 
-**Swarm**
-- `spawn [n]` — Create workers
-- `swarm` — Swarm status
-- `select [threshold]` — Darwinian reset of weak bots
-- `max [n]` — Limit swarm size
-- `worker [id]` — Enter a worker
-- `utility` — System monitor
-
-**Intelligence**
-- `search [query]` — Real web search
-- `run [expression]` — Simple math/code
-- `export` — Backup knowledge
-- `import [file]` — Load knowledge
-- `improve` — Self-improvement suggestions
-- `memory [key]` / `learn [key]` — Memory ops
-
-**Scale**
-- `playground` — Multi-bot test environment
-- `create [Name] [Role]` — Generate a brand new bot
+### Full command groups
+- **Core:** status, split, dark, light, exit
+- **Swarm:** spawn, swarm, select, max, worker, utility
+- **Intel:** search, run, export, import, improve, memory, learn
+- **Scale:** playground, create [Name] [Role]
+- **Graph:** graph, graph bootstrap, activate, decay
 
 ---
 
-## Direct Scripts
+## Direct graph usage
 
 ```bash
-python3 swarm.py status
-python3 swarm.py spawn 5
-python3 tools.py search "golden ratio"
-python3 tools.py improve
-python3 playground.py
-python3 create_bot.py Analyst "Deep analysis"
-python3 bots/utility.py
+python3 graph.py bootstrap
+python3 graph.py status
+python3 graph.py activate seed 1.5
+python3 graph.py add_edge dark light complement 0.9
+python3 graph.py neighbors seed
+python3 graph.py decay 0.9
 ```
 
 ---
 
 ## License
-
 MIT

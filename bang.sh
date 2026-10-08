@@ -1,30 +1,23 @@
 #!/bin/bash
 
 # ================================================
-# BANG SYSTEM v2.0 - FULL SYSTEM
-# Phases 1-5 Complete
+# BANG SYSTEM v2.1 - FULL SYSTEM + GRAPH LAYER
 # ================================================
 
-echo "🌱 BANG SYSTEM v2.0 — Full Stack"
-echo "Seed → Split → Swarm → Intelligence → Scale"
-echo "Type 'help' for all commands | 'exit' to quit"
+echo "🌱 BANG SYSTEM v2.1 — Graph Layer Active"
+echo "Seed → Split → Swarm → Intelligence → Scale → Graph"
+echo "Type 'help' | 'exit' to quit"
 echo ""
 
 MEMORY_FILE="memory.json"
 STATE_FILE="bang_state.txt"
 
-if [ ! -f "$MEMORY_FILE" ]; then
-    echo "{}" > "$MEMORY_FILE"
-fi
+if [ ! -f "$MEMORY_FILE" ]; then echo "{}" > "$MEMORY_FILE"; fi
 
 if [ -f "$STATE_FILE" ]; then
     source "$STATE_FILE"
 else
-    LEARNING=1.0
-    CONSCIOUSNESS=1.0
-    PRIDE=2.0
-    FITNESS=1.0
-    PHASE="seed"
+    LEARNING=1.0; CONSCIOUSNESS=1.0; PRIDE=2.0; FITNESS=1.0; PHASE="seed"
 fi
 
 PHI=1.6180339887
@@ -53,104 +46,90 @@ while true; do
     read -p "You > " input
 
     if [[ "$input" == "exit" || "$input" == "quit" || "$input" == "q" ]]; then
-        save_state
-        echo "Seed bot saved. Memory preserved."
-        break
+        save_state; echo "Saved."; break
     fi
-
     if [ -z "$input" ]; then continue; fi
     grow "$input"
 
-    # --- Core ---
     if [[ "$input" == "status" ]]; then
         echo "[STATUS] Phase: $PHASE | Learning: $LEARNING | Consciousness: $CONSCIOUSNESS | Pride: $PRIDE | Fitness: $FITNESS"
         [ -f swarm_state.json ] && python3 swarm.py status 2>/dev/null
+        [ -f graph_state.json ] && python3 graph.py status 2>/dev/null
 
     elif [[ "$input" == "split" || "$input" == "50/50" ]]; then
         if [ "$PHASE" == "seed" ]; then
-            echo "🔥 SPLIT INITIATED — Dark + Light born."
-            PHASE="split"
-            save_state
+            echo "🔥 SPLIT — Dark + Light born."
+            PHASE="split"; save_state
+            python3 graph.py bootstrap 2>/dev/null
         else
             echo "[BOT]: Already split. Phase: $PHASE"
         fi
 
     elif [[ "$input" == "dark" ]]; then
         [ -f bots/dark.py ] && python3 bots/dark.py || echo "Run 'split' first."
-
     elif [[ "$input" == "light" ]]; then
         [ -f bots/light.py ] && python3 bots/light.py || echo "Run 'split' first."
 
-    # --- Swarm ---
     elif [[ "$input" == spawn* ]]; then
         count="${input#spawn }"; count=${count:-1}
         python3 swarm.py spawn "$count" "from_seed"
+        # link new workers into graph
+        for i in $(seq 1 "$count"); do python3 graph.py link_worker "$i" 2>/dev/null; done
         PHASE="swarm"; save_state
 
-    elif [[ "$input" == "swarm" ]]; then
-        python3 swarm.py status
-
+    elif [[ "$input" == "swarm" ]]; then python3 swarm.py status
     elif [[ "$input" == select* || "$input" == darwin* ]]; then
-        thresh="${input##* }"; thresh=${thresh:-2.0}
-        python3 swarm.py select "$thresh"
+        python3 swarm.py select "${input##* }"
+    elif [[ "$input" == max* ]]; then python3 swarm.py max "${input#max }"
+    elif [[ "$input" == worker* ]]; then python3 swarm.py worker "${input#worker }"
+    elif [[ "$input" == "utility" || "$input" == "monitor" ]]; then python3 bots/utility.py
 
-    elif [[ "$input" == max* ]]; then
-        python3 swarm.py max "${input#max }"
-
-    elif [[ "$input" == worker* ]]; then
-        python3 swarm.py worker "${input#worker }"
-
-    elif [[ "$input" == "utility" || "$input" == "monitor" ]]; then
-        python3 bots/utility.py
-
-    # --- Intelligence (Phase 4) ---
-    elif [[ "$input" == search* ]]; then
-        query="${input#search }"
-        echo "[TOOL] Searching..."
-        python3 tools.py search "$query"
-
-    elif [[ "$input" == run* ]]; then
-        expr="${input#run }"
-        python3 tools.py run "$expr"
-
-    elif [[ "$input" == "export" ]]; then
-        python3 tools.py export
-
-    elif [[ "$input" == import* ]]; then
-        python3 tools.py import "${input#import }"
-
-    elif [[ "$input" == "improve" ]]; then
-        python3 tools.py improve
-
-    elif [[ "$input" == memory* ]]; then
-        python3 memory.py get "${input#memory }" 2>/dev/null || echo "No memory."
-
+    elif [[ "$input" == search* ]]; then python3 tools.py search "${input#search }"
+    elif [[ "$input" == run* ]]; then python3 tools.py run "${input#run }"
+    elif [[ "$input" == "export" ]]; then python3 tools.py export
+    elif [[ "$input" == import* ]]; then python3 tools.py import "${input#import }"
+    elif [[ "$input" == "improve" ]]; then python3 tools.py improve
+    elif [[ "$input" == memory* ]]; then python3 memory.py get "${input#memory }" 2>/dev/null || echo "No memory."
     elif [[ "$input" == learn* ]]; then
         key="${input#learn }"
-        read -p "What to remember about '$key'? " value
+        read -p "Remember about '$key'? " value
         python3 memory.py add "$key" "$value" 2>/dev/null
 
-    # --- Scale (Phase 5) ---
-    elif [[ "$input" == "playground" ]]; then
-        python3 playground.py
-
+    elif [[ "$input" == "playground" ]]; then python3 playground.py
     elif [[ "$input" == create* ]]; then
         rest="${input#create }"
         name=$(echo "$rest" | awk '{print $1}')
         role=$(echo "$rest" | cut -d' ' -f2-)
         python3 create_bot.py "$name" "$role"
+        python3 graph.py add_node "${name,,}" bot "$name" 2>/dev/null
+        python3 graph.py add_edge seed "${name,,}" parent 0.7 2>/dev/null
+
+    # --- GRAPH COMMANDS ---
+    elif [[ "$input" == "graph" || "$input" == "graph status" ]]; then
+        python3 graph.py status
+    elif [[ "$input" == "graph bootstrap" ]]; then
+        python3 graph.py bootstrap
+    elif [[ "$input" == activate* ]]; then
+        rest="${input#activate }"
+        nid=$(echo "$rest" | awk '{print $1}')
+        amt=$(echo "$rest" | awk '{print $2}'); amt=${amt:-1.0}
+        python3 graph.py activate "$nid" "$amt"
+    elif [[ "$input" == "decay" ]]; then
+        python3 graph.py decay
 
     elif [[ "$input" == "help" ]]; then
         echo ""
-        echo "=== BANG v2.0 COMMANDS ==="
+        echo "=== BANG v2.1 COMMANDS ==="
         echo "Core:     status | split | dark | light | help | exit"
         echo "Swarm:    spawn [n] | swarm | select [t] | max [n] | worker [id] | utility"
         echo "Intel:    search [q] | run [expr] | export | import [file] | improve | memory | learn"
         echo "Scale:    playground | create [Name] [Role]"
+        echo "Graph:    graph | graph bootstrap | activate [node] [amount] | decay"
         echo ""
-
     else
-        echo "[BOT]: Processing... I am learning."
+        echo "[BOT]: Processing..."
+        # light activation on seed when user talks
+        python3 graph.py activate seed 0.3 2>/dev/null
     fi
 
     save_state
