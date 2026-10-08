@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # ================================================
-# BANG SYSTEM v1.0 - SEED BOT FOUNDATION
+# BANG SYSTEM v1.1 - SEED BOT + SPLIT SUPPORT
 # Bash + Python Hybrid
 # ================================================
 
-echo "🌱 BANG LAYERED SYSTEM v1.0 (Bash + Python)"
-echo "Memory: Perpetual | Growth: Golden Ratio | Tools: Active"
+echo "🌱 BANG SYSTEM v1.1 — Seed Bot"
+echo "Memory: Perpetual | Growth: Golden Ratio | Split: Ready"
 echo "Type 'help' for commands | 'exit' to quit"
 echo ""
 
@@ -70,7 +70,6 @@ while true; do
     if [[ "$input" == search* ]]; then
         query="${input#search }"
         echo "[TOOL] Searching: $query"
-        # Real search would use curl + DuckDuckGo or other API here
         echo "[BOT]: Searching for information about: $query"
     
     elif [[ "$input" == read* ]]; then
@@ -96,13 +95,38 @@ while true; do
     
     elif [[ "$input" == "split" || "$input" == "50/50" ]]; then
         if [ "$PHASE" == "seed" ]; then
+            echo ""
             echo "🔥 SPLIT INITIATED"
             echo "Creating Dark Bot (Logic & Truth)..."
             echo "Creating Light Bot (Creation & Possibility)..."
+            echo ""
             echo "✅ The 50/50 Trinity is born."
+            echo ""
+            echo "You can now run:"
+            echo "  python3 bots/dark.py   → Enter Dark Bot"
+            echo "  python3 bots/light.py  → Enter Light Bot"
+            echo ""
             PHASE="split"
+            save_state
         else
             echo "[BOT]: Already split. Current phase: $PHASE"
+            echo "Run: python3 bots/dark.py  or  python3 bots/light.py"
+        fi
+    
+    elif [[ "$input" == "dark" ]]; then
+        if [ -f "bots/dark.py" ]; then
+            echo "Launching Dark Bot..."
+            python3 bots/dark.py
+        else
+            echo "[BOT]: Dark Bot not found. Run 'split' first."
+        fi
+    
+    elif [[ "$input" == "light" ]]; then
+        if [ -f "bots/light.py" ]; then
+            echo "Launching Light Bot..."
+            python3 bots/light.py
+        else
+            echo "[BOT]: Light Bot not found. Run 'split' first."
         fi
     
     elif [[ "$input" == "help" ]]; then
@@ -112,7 +136,9 @@ while true; do
         echo "  memory [key]     - Retrieve from memory"
         echo "  learn [key]      - Teach the bot something"
         echo "  status           - Show current stats"
-        echo "  split            - Trigger 50/50 Dark + Light creation"
+        echo "  split            - Create Dark + Light bots (50/50)"
+        echo "  dark             - Enter Dark Bot"
+        echo "  light            - Enter Light Bot"
         echo "  help             - Show this help"
         echo "  exit / quit      - Save and exit"
     

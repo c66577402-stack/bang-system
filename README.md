@@ -47,18 +47,22 @@ Build a chatbot AI that is significantly better than normal AI through recursive
 
 ---
 
-## Current Status (v1.0 Foundation)
+## Current Status (v1.1)
 
 | Feature              | Status      |
 |----------------------|-------------|
-| Seed Bot             | Working     |
-| Perpetual Memory     | Working     |
-| Golden Ratio Growth  | Working     |
-| Basic Tools          | Working     |
-| Neural Layers        | Prototype   |
-| Dark/Light Split     | Planned     |
-| Swarm                | Planned     |
-| Self-Improvement     | Planned     |
+| Seed Bot             | ✅ Working  |
+| Perpetual Memory     | ✅ Working  |
+| Golden Ratio Growth  | ✅ Working  |
+| Basic Tools          | ✅ Working  |
+| Neural Layers        | ✅ Prototype|
+| Dark Bot             | ✅ Working  |
+| Light Bot            | ✅ Working  |
+| Shared Memory        | ✅ Working  |
+| Split Command        | ✅ Working  |
+| Swarm                | 🔄 Planned  |
+| Self-Improvement     | 🔄 Planned  |
+| Darwinian Selection  | 🔄 Planned  |
 
 ---
 
@@ -67,13 +71,17 @@ Build a chatbot AI that is significantly better than normal AI through recursive
 ```
 bang-system/
 ├── README.md
-├── bang.sh                 # Main Bash interface
-├── memory.py               # Python memory + neural layer system
+├── bang.sh                 # Main Seed Bot (Bash interface)
+├── memory.py               # Python memory + neural layers
+├── bots/
+│   ├── dark.py             # Dark Bot (Logic & Truth)
+│   ├── light.py            # Light Bot (Creation & Possibility)
+│   └── __init__.py
 ├── docs/
 │   ├── ARCHITECTURE.md
 │   ├── VISION.md
 │   └── ROADMAP.md
-└── examples/
+└── memory.json             # Shared perpetual memory (created on first run)
 ```
 
 ---
@@ -92,13 +100,31 @@ chmod +x bang.sh
 ./bang.sh
 ```
 
-### Commands (current)
-- `help` — Show available commands
-- `memory [key]` — Retrieve from memory
-- `learn [key]` — Teach the bot something
-- `status` — Show current stats
-- `split` — Trigger 50/50 Dark + Light creation (when ready)
-- `exit` / `quit` — Save and exit
+### Commands (Seed Bot)
+
+| Command            | What it does                              |
+|--------------------|-------------------------------------------|
+| `help`             | Show available commands                   |
+| `status`           | Show current stats                        |
+| `memory [key]`     | Retrieve from shared memory               |
+| `learn [key]`      | Teach the bot something                   |
+| `search [query]`   | Search for information                    |
+| `read [file]`      | Read a local file                         |
+| `split`            | Create Dark + Light bots (50/50)          |
+| `dark`             | Enter Dark Bot                            |
+| `light`            | Enter Light Bot                           |
+| `exit` / `quit`    | Save and exit                             |
+
+### After Split
+
+Once you run `split`, you can also launch the bots directly:
+
+```bash
+python3 bots/dark.py    # Logic & Truth
+python3 bots/light.py   # Creation & Possibility
+```
+
+All three bots write to the same `memory.json` — this is the intertwined memory.
 
 ---
 

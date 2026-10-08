@@ -25,3 +25,9 @@ Build a chatbot AI that is significantly better than normal AI through:
 - Build understanding before allowing self-modification.
 - Use the swarm capability at a low rate initially.
 - Everything should feel like one continuous mind.
+
+## Current Realization (v1.1)
+The Seed Bot can now split into Dark and Light.  
+All three share the same memory file.  
+The foundation for the "one mind" is in place.  
+Next: Swarm creation and Darwinian selection.
